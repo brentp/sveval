@@ -67,6 +67,8 @@ def filter_filters(input_vcf, filters):
         if v.ALT[0] == "<TRA>": continue
         if v.CHROM == "hs37d5": continue
 
+        if v.INFO.get("SVTYPE") == "BND": continue
+
         ovcf.write_record(v)
         n += 1
 
@@ -169,14 +171,14 @@ def main(args=sys.argv[1:]):
         if p.returncode != 0:
             if p.stderr is not None:
                 print(p.stderr.read())
-            sys.exit(p.returncode)
+            #sys.exit(p.returncode)
 
     fmt = "{svtype}\t{name}\t{sizemin}\t{sizemax}\t{precision}\t{recall}\t{TP}\t{FP}\t{FN}"
     print("#" + fmt.replace("{", "").replace("}", ""))
     for d in dirs:
-       if "sveval.truvari" in d:
+       if "sveval.truvari" in d and os.path.exists(os.path.join(d, "summary.txt")):
            print(fmt.format(**extract_truvari(os.path.join(d, "summary.txt"))))
-       elif "sveval.wittyer" in d:
+       elif "sveval.wittyer" in d and os.path.exists(os.path.join(d, "Wittyer.Stats.json")):
            for d in extract_wittyer(os.path.join(d, "Wittyer.Stats.json")):
               print(fmt.format(**d))
 
