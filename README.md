@@ -15,6 +15,8 @@ docker run -it -v $path:$mapped_path brentp/sveval:v0.0.1 --fasta $fasta $dysgu_
 docker run -it -v $path:$mapped_path brentp/sveval:v0.0.1 --fasta $fasta $manta_vcf --caller manta
 ```
 
+where `$vcf` **must be in GRCh37 coordinates**.
+
 This will report a table like:
 ```
 #svtype	name	sizemin	sizemax	precision	recall	TP	FP	FN
